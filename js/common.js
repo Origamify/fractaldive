@@ -16,7 +16,6 @@
 /* --- constants: zoom / iteration config --- */
 const MAX_ITER_CAP = 16384;  // iteration ceiling; also sizes the per-frame reference Z table (engine_frame.js)
 const BASE_SCALE = 3.0;      // viewport height in the complex plane at dive start — whole set visible
-const INITIAL_VIEW_HEIGHT = 8.574918039752398e-28; // page-load view height over DIVE_TARGETS[0]; Reset still parks at BASE_SCALE
 const MIN_S = 1e-35; // dive floor: smallest viewport scale — ~5 decades past the f32-delta regime's external proof (2^-100, ALGORITHM.md §2); reference format still exact here (see fixed_point.js)
 const CENTER_FIXED_POINT_BITS = 256; // canonical fractional bits of the BigInt dive center (~77 decimal digits — far past MIN_S, under the engine's 1000-bit frame cap)
 const SPEED_MIN = 0.05;      // speed slider 0 — zoom factor per second

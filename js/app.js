@@ -138,7 +138,7 @@ async function initApp() {
     }
 
     fitCanvasToViewport();
-    goToView(DIVE_TARGETS[0].x, DIVE_TARGETS[0].y, INITIAL_VIEW_HEIGHT); // load deep into the first target; Reset parks at BASE_SCALE
+    startDive(DIVE_TARGETS[0]); // page load = Reset: whole set in view at the first target
     requestAnimationFrame(onAnimationFrame);
 }
 
