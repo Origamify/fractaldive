@@ -20,7 +20,7 @@ const MIN_S = 1e-35; // dive floor: smallest viewport scale — ~5 decades past 
 const CENTER_FIXED_POINT_BITS = 256; // canonical fractional bits of the BigInt dive center (~77 decimal digits — far past MIN_S, under the engine's 1000-bit frame cap)
 const SPEED_MIN = 0.05;      // speed slider 0 — zoom factor per second
 const SPEED_MAX = 4;         // speed slider 100 — zoom factor per second
-const DEFAULT_SPEED = 1;     // initial zoom rate; the slider parks at the nearest step
+const DEFAULT_SPEED = 0.5;   // initial zoom rate; the slider parks at the nearest step
 const MS_PER_SECOND = 1000;  // ms→s divisor for the per-second zoom rate (dive.js's adaptation, app.js's stepping)
 const VIEW_JSON_FRACTION_DIGITS = 78; // decimal fractional digits in the clipboard view JSON — ≥ log10(2^CENTER_FIXED_POINT_BITS), so the center round-trips exactly
 
