@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fractal Dive</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="cv"></canvas>
+
+<footer id="bar">
+  <div class="btns">
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="resetBtn">⟲ Reset</button>
+    <button id="copyBtn" title="Copy the current center + zoom to the clipboard as JSON">⧉ Copy</button>
+    <button id="gotoBtn" title="Jump to the JSON view on the clipboard">⤳ Go to</button>
+  </div>
+  <label class="ctl">Target <select id="targetSel"></select></label>
+  <div class="ctl"><span class="lbl">Speed</span><input type="range" id="speed" min="0" max="100" value="68"><span id="speedLbl">×1/s</span></div>
+  <label class="ctl" title="Slow the zoom automatically when renders can't keep up"><input type="checkbox" id="autoSpeedChk" checked> Auto</label>
+  <div id="hud">depth ×1.0e0</div>
+</footer>
+
+<div id="notice"></div>
+<div id="toast"></div>
+
+<!-- Classic scripts (not ES modules) so the app keeps working from file:// —
+     module imports/fetch are CORS-blocked on file://. Load order matters:
+     common.js first (the kernels splice its constants at script load), then
+     the limb lib (the reference kernel splices it), the kernel sources,
+     the engine, the presenter, then the app. -->
+<script src="js/common.js"></script>
+<script src="js/fixed_point.js"></script>
+<script src="js/kernels/limb_array_math.js"></script>
+<script src="js/kernels/reference_orbit_wgsl.js"></script>
+<script src="js/kernels/perturb_kernel_wgsl.js"></script>
+<script src="js/kernels/present_blit_wgsl.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/engine_frame.js"></script>
+<script src="js/presenter.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/dive.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

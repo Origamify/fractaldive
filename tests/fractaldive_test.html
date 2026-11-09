@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FractalDive — engine &amp; app tests</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0; padding: 24px; background: #0d0f14; color: #cfd6e4;
+      font: 13px/1.5 "SF Mono", "Cascadia Code", Consolas, monospace;
+    }
+    h1 { font-size: 15px; margin: 0 0 4px; color: #8ab4ff; }
+    .sub { color: #6b7385; margin: 0 0 16px; }
+    #test-summary { margin: 0 0 12px; padding: 8px 12px; border-radius: 6px; background: #161a23; }
+    #test-summary.pass { color: #7ee081; }
+    #test-summary.fail { color: #ff7b72; }
+    #test-log { white-space: pre-wrap; margin: 0; }
+    #test-log .pass { color: #7ee081; }
+    #test-log .fail { color: #ff7b72; }
+    #test-log .info { color: #8b93a7; }
+  </style>
+</head>
+<body>
+  <h1>FractalDive engine &amp; app tests — everything but the limb lib</h1>
+  <p class="sub">Five sections, run in order on one page (the limb lib's own tier sweep lives in
+    limb_array_math_test.html):
+    (1) the df32 reference Z-table bit-exact against a BigInt oracle;
+    (2) the shipped f32 perturbation frames vs the retired exact per-pixel kernel
+    (tests/oracle/*) within the documented tolerance, shallow → the 1e-35 floor;
+    (3) multi-band vs single-pass frames bit-identical through the real engine, plus the
+    band-partition unit check;
+    (4) the commit blit's shader exact at crop 1 (the app's only presentation crop —
+    the CSS transform owns the zoom between settles);
+    (5) the render/presentation split on mocks — engine render→settle→commit lifecycle,
+    dive window/generation state machine, presenter transform, adaptive zoom rate
+    (no GPU work).
+    Sections 1, 2 and 4 share one device and one reference pipeline; section 3 boots the
+    real engine; section 5 runs last (it shadows the clock and rAF for determinism).
+    Needs WebGPU.</p>
+  <div id="test-summary">starting…</div>
+  <pre id="test-log"></pre>
+  <!-- Classic scripts, load order matters: kit; common + fixed_point (frame math,
+       reference constants); the limb lib; the retired exact chunks (oracle), the
+       reference kernel, the perturb kernel (its palette/render chunk constants
+       splice into the oracle below), the blit kernel; engine + engine_frame +
+       presenter; dive + app last (FRACTALDIVE_NO_AUTOBOOT below keeps app.js's
+       initApp from booting on this page); then the suite. -->
+  <script src="test_kit.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="../js/fixed_point.js"></script>
+  <script src="../js/kernels/limb_array_math.js"></script>
+  <script src="oracle/engine_kernel_wgsl_bindings.js"></script>
+  <script src="oracle/engine_kernel_wgsl_orbit.js"></script>
+  <script src="../js/kernels/reference_orbit_wgsl.js"></script>
+  <script src="../js/kernels/perturb_kernel_wgsl.js"></script>
+  <script src="../js/kernels/present_blit_wgsl.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/engine_frame.js"></script>
+  <script src="../js/presenter.js"></script>
+  <script>window.FRACTALDIVE_NO_AUTOBOOT = true; /* section 5 drives the loop by hand */</script>
+  <script src="../js/dive.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="fractaldive_test.js"></script>
+</body>
+</html>

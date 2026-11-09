@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FractalDive — limb_array_math.js tests</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0; padding: 24px; background: #0d0f14; color: #cfd6e4;
+      font: 13px/1.5 "SF Mono", "Cascadia Code", Consolas, monospace;
+    }
+    h1 { font-size: 15px; margin: 0 0 4px; color: #8ab4ff; }
+    .sub { color: #6b7385; margin: 0 0 16px; }
+    #test-summary { margin: 0 0 12px; padding: 8px 12px; border-radius: 6px; background: #161a23; }
+    #test-summary.pass { color: #7ee081; }
+    #test-summary.fail { color: #ff7b72; }
+    #test-log { white-space: pre-wrap; margin: 0; }
+    #test-log .pass { color: #7ee081; }
+    #test-log .fail { color: #ff7b72; }
+    #test-log .info { color: #8b93a7; }
+  </style>
+</head>
+<body>
+  <h1>limb_array_math.js — WGSL limb math vs JS BigInt oracle</h1>
+  <p class="sub">Runs every lib function on WebGPU for precision tiers 1..8 limbs and compares
+    against two's-complement BigInt twins. Needs WebGPU (Chromium, file:// works).</p>
+  <div id="test-summary">starting…</div>
+  <pre id="test-log"></pre>
+  <!-- Classic scripts, load order matters: the shared kit, then the
+       WGSL lib template string, then the test harness. -->
+  <script src="test_kit.js"></script>
+  <script src="../js/kernels/limb_array_math.js"></script>
+  <script src="limb_array_math_test.js"></script>
+</body>
+</html>

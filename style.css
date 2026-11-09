@@ -1,0 +1,62 @@
+:root {
+  --bg: #0d1117; --line: #30363d; --fg: #e6edf3; --dim: #8b949e; --acc: #58a6ff;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body { background: #000; color: var(--fg); font: 13px/1.45 system-ui, sans-serif; }
+
+/* ---- canvas fills the viewport ----
+ * Backing store runs at 2× device px (the base frame resolution);
+ * js/presenter.js zooms it with a center-origin CSS transform —
+ * the compositor re-samples the bitmap, never the WebGPU queue. */
+#cv {
+  position: fixed; inset: 0; width: 100%; height: 100%; display: block;
+  transform-origin: 50% 50%; will-change: transform;
+}
+
+/* ---- footer bar: translucent dark glass, bottom, full width ---- */
+#bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px;
+  padding: 10px 14px;
+  background: rgba(13, 17, 23, .72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+}
+#bar .btns { display: flex; gap: 6px; }
+#bar button {
+  background: #21262d; border: 1px solid var(--line); color: var(--fg);
+  border-radius: 6px; padding: 5px 10px; cursor: pointer; font: inherit; white-space: nowrap;
+}
+#bar button:hover:not(:disabled) { border-color: var(--acc); }
+#bar button:disabled { opacity: .35; cursor: not-allowed; }
+#bar .ctl { display: flex; align-items: center; gap: 8px; min-width: 0; }
+#bar .lbl, #bar label.ctl { color: var(--dim); white-space: nowrap; }
+#bar select {
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; font: inherit; max-width: 170px;
+}
+#bar input[type=range] { width: 150px; accent-color: var(--acc); }
+#bar input[type=checkbox] { accent-color: var(--acc); }
+#speedLbl { font-family: var(--mono); font-size: 11px; color: var(--fg); min-width: 52px; text-align: right; }
+
+#hud { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: right; }
+#hud.max { color: #f0a45d; }
+
+/* ---- transient status toast (copy / go-to feedback), above the footer ---- */
+#toast {
+  position: fixed; left: 50%; bottom: 64px; transform: translateX(-50%); z-index: 6;
+  padding: 6px 12px; border-radius: 6px;
+  background: rgba(33, 38, 45, .9); border: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; color: var(--fg);
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+#toast.show { opacity: 1; }
+
+/* ---- WebGPU failure: centered notice, footer hidden ---- */
+#notice { display: none; }
+body.failed #notice {
+  display: grid; place-items: center; position: fixed; inset: 0; z-index: 9; padding: 24px;
+  background: var(--bg); font: 14px/1.6 system-ui, sans-serif; color: var(--dim); text-align: center;
+}
+body.failed #bar { display: none; }
